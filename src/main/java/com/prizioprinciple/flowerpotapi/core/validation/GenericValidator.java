@@ -19,7 +19,7 @@ import java.util.*;
  * Validator class for method integrity
  *
  * @author Stephen Prizio
- * @version 1.0
+ * @version 0.0.1
  */
 public class GenericValidator {
 

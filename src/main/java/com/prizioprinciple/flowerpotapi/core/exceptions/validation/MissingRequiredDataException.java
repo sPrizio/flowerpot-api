@@ -4,7 +4,7 @@ package com.prizioprinciple.flowerpotapi.core.exceptions.validation;
  * Exception thrown when required data is not available or is missing
  *
  * @author Stephen Prizio
- * @version 1.0
+ * @version 0.0.1
  */
 public class MissingRequiredDataException extends RuntimeException {
 

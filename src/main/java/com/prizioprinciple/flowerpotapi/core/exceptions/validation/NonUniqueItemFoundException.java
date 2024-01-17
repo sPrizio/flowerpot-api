@@ -4,7 +4,7 @@ package com.prizioprinciple.flowerpotapi.core.exceptions.validation;
  * Custom exception for non unique items in the database
  *
  * @author Stephen Prizio
- * @version 1.0
+ * @version 0.0.1
  */
 public class NonUniqueItemFoundException extends RuntimeException {
 

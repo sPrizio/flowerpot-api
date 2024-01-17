@@ -4,7 +4,7 @@ package com.prizioprinciple.flowerpotapi.core.exceptions.validation;
  * Exception for a missing json property
  *
  * @author Stephen Prizio
- * @version 1.0
+ * @version 0.0.1
  */
 public class JsonMissingPropertyException extends RuntimeException {
 
