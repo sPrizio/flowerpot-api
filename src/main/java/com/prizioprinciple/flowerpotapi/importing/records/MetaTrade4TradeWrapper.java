@@ -11,16 +11,16 @@ import java.time.LocalDateTime;
  * @version 0.0.1
  */
 public record MetaTrade4TradeWrapper(
-        @Getter String ticketNumber,
+        String ticketNumber,
         @Getter LocalDateTime openTime,
         @Getter LocalDateTime closeTime,
-        @Getter String type,
-        @Getter double size,
-        @Getter String item,
-        @Getter double openPrice,
-        @Getter double stopLoss,
-        @Getter double takeProfit,
-        @Getter double closePrice,
-        @Getter double profit
+        String type,
+        double size,
+        String item,
+        double openPrice,
+        double stopLoss,
+        double takeProfit,
+        double closePrice,
+        double profit
 ) {
 }
