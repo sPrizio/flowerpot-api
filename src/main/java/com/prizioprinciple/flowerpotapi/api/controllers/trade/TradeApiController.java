@@ -177,7 +177,8 @@ public class TradeApiController {
 
     /**
      * Obtains the {@link Account} matching the given account number from the {@link Account}s associated to the given {@link User}
-     * @param user {@link User}
+     *
+     * @param user          {@link User}
      * @param accountNumber account number
      * @return {@link Account}
      */

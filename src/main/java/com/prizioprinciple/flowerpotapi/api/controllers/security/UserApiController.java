@@ -133,7 +133,7 @@ public class UserApiController extends AbstractApiController {
      * Updates an existing {@link User}
      *
      * @param request {@link HttpServletRequest}
-     * @param data  json data
+     * @param data    json data
      * @return {@link StandardJsonResponse}
      */
     @ValidateApiToken

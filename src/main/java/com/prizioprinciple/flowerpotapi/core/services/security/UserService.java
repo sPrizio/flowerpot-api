@@ -86,7 +86,7 @@ public class UserService {
      * Updates an existing {@link User} with the given {@link Map} of data. Update methods are designed to be idempotent.
      *
      * @param user {@link User}
-     * @param data  {@link Map}
+     * @param data {@link Map}
      * @return modified {@link User}
      */
     public User updateUser(final User user, final Map<String, Object> data) {

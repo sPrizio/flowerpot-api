@@ -94,7 +94,7 @@ public class GlobalExceptionHandler {
     /**
      * Generates a {@link StandardJsonResponse}
      *
-     * @param message message
+     * @param message         message
      * @param internalMessage internal reporting message
      */
     private StandardJsonResponse generateResponse(final String message, final String internalMessage) {

@@ -1,8 +1,8 @@
 package com.prizioprinciple.flowerpotapi.security.services;
 
 import com.prizioprinciple.flowerpotapi.core.constants.CoreConstants;
-import com.prizioprinciple.flowerpotapi.security.exceptions.InvalidApiTokenException;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
+import com.prizioprinciple.flowerpotapi.security.exceptions.InvalidApiTokenException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
