@@ -5,7 +5,6 @@ import com.prizioprinciple.flowerpotapi.core.enums.security.UserRole;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityCreationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityModificationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.validation.MissingRequiredDataException;
-import com.prizioprinciple.flowerpotapi.core.exceptions.validation.NoResultFoundException;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.models.entities.system.PhoneNumber;
 import com.prizioprinciple.flowerpotapi.core.repositories.security.UserRepository;
@@ -86,23 +85,19 @@ public class UserService {
     /**
      * Updates an existing {@link User} with the given {@link Map} of data. Update methods are designed to be idempotent.
      *
-     * @param email user email
+     * @param user {@link User}
      * @param data  {@link Map}
      * @return modified {@link User}
      */
-    public User updateUser(final String email, final Map<String, Object> data) {
+    public User updateUser(final User user, final Map<String, Object> data) {
 
-        validateParameterIsNotNull(email, "email cannot be null");
+        validateParameterIsNotNull(user, CoreConstants.Validation.Security.User.USER_CANNOT_BE_NULL);
 
         if (MapUtils.isEmpty(data)) {
             throw new MissingRequiredDataException("The required data for updating a User was null or empty");
         }
 
         try {
-            User user =
-                    findUserByEmail(email)
-                            .orElseThrow(() -> new NoResultFoundException(String.format("No User found for email %s", email)));
-
             return applyChanges(user, data, false);
         } catch (Exception e) {
             throw new EntityModificationException(String.format("An error occurred while modifying the User : %s", e.getMessage()), e);

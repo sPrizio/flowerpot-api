@@ -3,11 +3,16 @@ package com.prizioprinciple.flowerpotapi.api.controllers.advice;
 import com.prizioprinciple.flowerpotapi.api.constants.ApiConstants;
 import com.prizioprinciple.flowerpotapi.api.exceptions.InvalidEnumException;
 import com.prizioprinciple.flowerpotapi.api.models.records.json.StandardJsonResponse;
+import com.prizioprinciple.flowerpotapi.core.exceptions.calculator.UnexpectedNegativeValueException;
+import com.prizioprinciple.flowerpotapi.core.exceptions.calculator.UnexpectedZeroValueException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityCreationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityModificationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.GenericSystemException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.validation.*;
 import com.prizioprinciple.flowerpotapi.importing.exceptions.FileExtensionNotSupportedException;
+import com.prizioprinciple.flowerpotapi.importing.exceptions.TradeImportFailureException;
+import com.prizioprinciple.flowerpotapi.security.exceptions.InvalidApiTokenException;
+import com.prizioprinciple.flowerpotapi.security.exceptions.NoValidUserForTokenException;
 import org.hibernate.boot.beanvalidation.IntegrationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +28,7 @@ import java.time.DateTimeException;
  * Handles the exceptions thrown by the application
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,16 +38,27 @@ public class GlobalExceptionHandler {
 
     //  METHODS
 
+    /**
+     * Method that handles client-side errors
+     *
+     * @param exception {@link Exception}
+     * @return {@link StandardJsonResponse}
+     */
     @ResponseBody
     @ExceptionHandler(value = {
             DateTimeException.class,
             FileExtensionNotSupportedException.class,
             IllegalParameterException.class,
             InvalidEnumException.class,
+            InvalidApiTokenException.class,
+            FileExtensionNotSupportedException.class,
             JsonMissingPropertyException.class,
             MissingRequiredDataException.class,
             NonUniqueItemFoundException.class,
             NoResultFoundException.class,
+            NoValidUserForTokenException.class,
+            UnexpectedNegativeValueException.class,
+            UnexpectedZeroValueException.class,
             UnsupportedOperationException.class
     })
     public StandardJsonResponse handleClientError(final Exception exception) {
@@ -50,6 +66,12 @@ public class GlobalExceptionHandler {
         return generateResponse(ApiConstants.CLIENT_ERROR_DEFAULT_MESSAGE, exception.getMessage());
     }
 
+    /**
+     * Method that handles server-side errors
+     *
+     * @param exception {@link Exception}
+     * @return {@link StandardJsonResponse}
+     */
     @ResponseBody
     @ExceptionHandler({
             EntityCreationException.class,
@@ -58,7 +80,8 @@ public class GlobalExceptionHandler {
             GenericSystemException.class,
             IllegalArgumentException.class,
             IntegrationException.class,
-            SQLSyntaxErrorException.class
+            SQLSyntaxErrorException.class,
+            TradeImportFailureException.class
     })
     public StandardJsonResponse handleServerError(final Exception exception) {
         LOGGER.error("An internal server error occurred. ", exception);
@@ -70,6 +93,9 @@ public class GlobalExceptionHandler {
 
     /**
      * Generates a {@link StandardJsonResponse}
+     *
+     * @param message message
+     * @param internalMessage internal reporting message
      */
     private StandardJsonResponse generateResponse(final String message, final String internalMessage) {
         return new StandardJsonResponse(false, null, message, internalMessage);
