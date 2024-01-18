@@ -19,13 +19,13 @@ import java.time.LocalDateTime;
  * @version 0.0.1
  */
 public record CMCTradeWrapper(
-        @Getter LocalDateTime dateTime,
-        @Getter String type,
-        @Getter String orderNumber,
-        @Getter String relatedOrderNumber,
-        @Getter String product,
-        @Getter double units,
-        @Getter double price,
-        @Getter double amount
+        LocalDateTime dateTime,
+        String type,
+        String orderNumber,
+        String relatedOrderNumber,
+        String product,
+        double units,
+        double price,
+        double amount
 ) {
 }

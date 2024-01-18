@@ -63,6 +63,9 @@ public class Account implements GenericEntity {
     @Column
     private TradePlatform tradePlatform;
 
+    @Column
+    private LocalDateTime lastTraded;
+
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Trade> trades;
 
