@@ -3,10 +3,11 @@ package com.prizioprinciple.flowerpotapi.core.repositories.trade;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.info.TradeType;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
 import com.prizioprinciple.flowerpotapi.core.models.entities.trade.Trade;
-import com.prizioprinciple.flowerpotapi.core.repositories.FlowerpotRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -16,10 +17,10 @@ import java.util.List;
  * Data-access layer for {@link Trade} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Repository
-public interface TradeRepository extends FlowerpotRepository<Trade> {
+public interface TradeRepository extends PagingAndSortingRepository<Trade, Long>, CrudRepository<Trade, Long> {
 
     /**
      * Returns a {@link List} of {@link Trade}s for the given {@link TradeType}

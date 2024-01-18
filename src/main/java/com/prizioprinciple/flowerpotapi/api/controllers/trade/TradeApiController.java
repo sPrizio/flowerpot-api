@@ -30,7 +30,7 @@ import static com.prizioprinciple.flowerpotapi.importing.validation.ImportValida
  * Api controller for {@link Trade}
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/trade")
@@ -78,7 +78,7 @@ public class TradeApiController {
      * Returns a {@link StandardJsonResponse} containing {@link Trade}s for the given interval of time
      *
      * @param start start date & time
-     * @param end end date & time
+     * @param end   end date & time
      * @return {@link StandardJsonResponse}
      */
     @GetMapping("/for-interval")
@@ -97,7 +97,7 @@ public class TradeApiController {
      * Returns a {@link StandardJsonResponse} containing {@link Trade}s for the given interval of time
      *
      * @param start start date & time
-     * @param end end date & time
+     * @param end   end date & time
      * @return {@link StandardJsonResponse}
      */
     @GetMapping("/for-interval-paged")

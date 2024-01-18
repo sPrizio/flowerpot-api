@@ -5,10 +5,10 @@ import com.prizioprinciple.flowerpotapi.api.models.dto.system.PhoneNumberDTO;
 import com.prizioprinciple.flowerpotapi.core.constants.CoreConstants;
 import com.prizioprinciple.flowerpotapi.core.models.entities.system.PhoneNumber;
 import com.prizioprinciple.flowerpotapi.core.services.platform.UniqueIdentifierService;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.Resource;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
  * Converter that converts {@link PhoneNumber}s into {@link PhoneNumberDTO}s
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Component("phoneNumberDTOConverter")
 public class PhoneNumberDTOConverter implements GenericDTOConverter<PhoneNumber, PhoneNumberDTO> {

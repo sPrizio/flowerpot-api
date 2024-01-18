@@ -1,17 +1,18 @@
 package com.prizioprinciple.flowerpotapi.core.repositories.account;
 
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
-import com.prizioprinciple.flowerpotapi.core.repositories.FlowerpotRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * Data-access layer for {@link Account} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Repository
-public interface AccountRepository extends FlowerpotRepository<Account> {
+public interface AccountRepository extends PagingAndSortingRepository<Account, Long>, CrudRepository<Account, Long> {
 
     /**
      * Obtains an {@link Account} for the given account number

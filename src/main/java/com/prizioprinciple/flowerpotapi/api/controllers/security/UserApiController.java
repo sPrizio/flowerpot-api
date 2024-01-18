@@ -3,17 +3,20 @@ package com.prizioprinciple.flowerpotapi.api.controllers.security;
 import com.prizioprinciple.flowerpotapi.api.controllers.AbstractApiController;
 import com.prizioprinciple.flowerpotapi.api.converters.security.UserDTOConverter;
 import com.prizioprinciple.flowerpotapi.api.models.records.json.StandardJsonResponse;
+import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.system.Country;
 import com.prizioprinciple.flowerpotapi.core.enums.system.Language;
 import com.prizioprinciple.flowerpotapi.core.enums.system.PhoneType;
-import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.services.security.UserService;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.validateJsonIntegrity;
@@ -23,7 +26,7 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * API controller for {@link User}
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/user")
@@ -122,7 +125,7 @@ public class UserApiController extends AbstractApiController {
      * Updates an existing {@link User}
      *
      * @param email email
-     * @param data json data
+     * @param data  json data
      * @return {@link StandardJsonResponse}
      */
     @PutMapping("/update")
