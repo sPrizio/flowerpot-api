@@ -3,17 +3,23 @@ package com.prizioprinciple.flowerpotapi.api.controllers.security;
 import com.prizioprinciple.flowerpotapi.api.controllers.AbstractApiController;
 import com.prizioprinciple.flowerpotapi.api.converters.security.UserDTOConverter;
 import com.prizioprinciple.flowerpotapi.api.models.records.json.StandardJsonResponse;
+import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.system.Country;
 import com.prizioprinciple.flowerpotapi.core.enums.system.Language;
 import com.prizioprinciple.flowerpotapi.core.enums.system.PhoneType;
-import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.services.security.UserService;
+import com.prizioprinciple.flowerpotapi.security.aspects.ValidateApiToken;
+import com.prizioprinciple.flowerpotapi.security.constants.SecurityConstants;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.validateJsonIntegrity;
@@ -23,7 +29,7 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * API controller for {@link User}
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/user")
@@ -49,6 +55,7 @@ public class UserApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/country-codes")
     public StandardJsonResponse getCountryCodes() {
         return new StandardJsonResponse(
@@ -65,6 +72,7 @@ public class UserApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/phone-types")
     public StandardJsonResponse getPhoneTypes() {
         return new StandardJsonResponse(true, PhoneType.values(), StringUtils.EMPTY);
@@ -75,6 +83,7 @@ public class UserApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/currencies")
     public StandardJsonResponse getCurrencies() {
         return new StandardJsonResponse(true, Arrays.stream(Currency.values()).map(Currency::getIsoCode).collect(Collectors.toCollection(TreeSet::new)), StringUtils.EMPTY);
@@ -85,6 +94,7 @@ public class UserApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/countries")
     public StandardJsonResponse getCountries() {
         return new StandardJsonResponse(true, Country.values(), StringUtils.EMPTY);
@@ -95,6 +105,7 @@ public class UserApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/languages")
     public StandardJsonResponse getLanguages() {
         return new StandardJsonResponse(true, Language.values(), StringUtils.EMPTY);
@@ -121,13 +132,15 @@ public class UserApiController extends AbstractApiController {
     /**
      * Updates an existing {@link User}
      *
-     * @param email email
-     * @param data json data
+     * @param request {@link HttpServletRequest}
+     * @param data    json data
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @PutMapping("/update")
-    public StandardJsonResponse putUpdateUser(final @RequestParam("email") String email, final @RequestBody Map<String, Object> data) {
+    public StandardJsonResponse putUpdateUser(final HttpServletRequest request, final @RequestBody Map<String, Object> data) {
         validateJsonIntegrity(data, REQUIRED_JSON_VALUES, "json did not contain of the required keys : %s", REQUIRED_JSON_VALUES.toString());
-        return new StandardJsonResponse(true, this.userDTOConverter.convert(this.userService.updateUser(email, data)), StringUtils.EMPTY);
+        final User user = (User) request.getAttribute(SecurityConstants.USER_REQUEST_KEY);
+        return new StandardJsonResponse(true, this.userDTOConverter.convert(this.userService.updateUser(user, data)), StringUtils.EMPTY);
     }
 }

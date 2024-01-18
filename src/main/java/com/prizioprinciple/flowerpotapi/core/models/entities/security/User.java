@@ -11,6 +11,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Class representation of an individual that can interact with the system, hold accounts and other information
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Getter
 @Entity
@@ -29,6 +30,10 @@ public class User implements GenericEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
+
+    @Setter
+    @Column
+    private String apiToken;
 
     @Setter
     @Column
@@ -49,6 +54,10 @@ public class User implements GenericEntity {
     @Column
     @JsonIgnore
     private String password;
+
+    @Setter
+    @Column
+    private LocalDateTime dateRegistered;
 
     @Setter
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

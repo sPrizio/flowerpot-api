@@ -7,19 +7,22 @@ import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
  * A DTO representation of a {@link User}
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Setter
 @Getter
 public class UserDTO implements GenericDTO {
 
     private String uid;
+
+    private String apiToken;
 
     private String firstName;
 
@@ -28,6 +31,8 @@ public class UserDTO implements GenericDTO {
     private String username;
 
     private String email;
+
+    private LocalDateTime dateRegistered;
 
     private List<PhoneNumberDTO> phones;
 

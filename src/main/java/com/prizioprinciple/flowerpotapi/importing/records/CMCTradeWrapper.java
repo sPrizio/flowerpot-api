@@ -1,7 +1,5 @@
 package com.prizioprinciple.flowerpotapi.importing.records;
 
-import lombok.Getter;
-
 import java.time.LocalDateTime;
 
 /**
@@ -16,7 +14,7 @@ import java.time.LocalDateTime;
  * @param price              price at time of trade
  * @param amount             net profit amount
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 public record CMCTradeWrapper(
         LocalDateTime dateTime,

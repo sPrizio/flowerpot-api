@@ -1,17 +1,18 @@
 package com.prizioprinciple.flowerpotapi.core.repositories.security;
 
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
-import com.prizioprinciple.flowerpotapi.core.repositories.FlowerpotRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * Data-access layer for {@link User} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Repository
-public interface UserRepository extends FlowerpotRepository<User> {
+public interface UserRepository extends PagingAndSortingRepository<User, Long>, CrudRepository<User, Long> {
 
     /**
      * Attempts to look up a {@link User} by their username

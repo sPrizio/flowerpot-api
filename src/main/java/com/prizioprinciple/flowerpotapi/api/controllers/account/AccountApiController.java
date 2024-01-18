@@ -10,6 +10,7 @@ import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.platform.TradePlatform;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
 import com.prizioprinciple.flowerpotapi.core.services.account.AccountService;
+import com.prizioprinciple.flowerpotapi.security.aspects.ValidateApiToken;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * API Controller for {@link Account}
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/account")
@@ -49,6 +50,7 @@ public class AccountApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/currencies")
     public StandardJsonResponse getCurrencies() {
         return new StandardJsonResponse(true, Arrays.stream(Currency.values()).map(c -> new PairEntry(c.getIsoCode(), c.getLabel(), c.getSymbol())).toList(), StringUtils.EMPTY);
@@ -59,6 +61,7 @@ public class AccountApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/account-types")
     public StandardJsonResponse getAccountTypes() {
         return new StandardJsonResponse(true, Arrays.stream(AccountType.values()).map(at -> new PairEntry(at.getLabel().toUpperCase(), at.getLabel(), StringUtils.EMPTY)).toList(), StringUtils.EMPTY);
@@ -69,6 +72,7 @@ public class AccountApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/brokers")
     public StandardJsonResponse getBrokers() {
         return new StandardJsonResponse(true, Arrays.stream(Broker.values()).map(b -> new PairEntry(b.getCode(), b.getName(), StringUtils.EMPTY)).toList(), StringUtils.EMPTY);
@@ -79,6 +83,7 @@ public class AccountApiController extends AbstractApiController {
      *
      * @return {@link StandardJsonResponse}
      */
+    @ValidateApiToken
     @GetMapping("/trade-platforms")
     public StandardJsonResponse getTradePlatforms() {
         return new StandardJsonResponse(true, Arrays.stream(TradePlatform.values()).map(tp -> new PairEntry(tp.getCode(), tp.getLabel(), StringUtils.EMPTY)).toList(), StringUtils.EMPTY);

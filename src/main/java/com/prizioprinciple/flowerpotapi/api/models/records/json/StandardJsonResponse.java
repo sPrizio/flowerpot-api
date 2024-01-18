@@ -1,13 +1,12 @@
 package com.prizioprinciple.flowerpotapi.api.models.records.json;
 
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * Class representation of a standard json response
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 public record StandardJsonResponse(
         boolean success,
