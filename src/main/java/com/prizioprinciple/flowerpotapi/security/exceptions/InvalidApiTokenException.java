@@ -1,4 +1,4 @@
-package com.prizioprinciple.flowerpotapi.core.exceptions.security;
+package com.prizioprinciple.flowerpotapi.security.exceptions;
 
 /**
  * Exception thrown when the given API token is invalid
