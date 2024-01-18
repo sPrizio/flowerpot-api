@@ -19,9 +19,12 @@ Current Release: **Pre-release**
 ---
 
 ### Todo List
-1. Import Trades Service
-2. Conversion Services & DTOs
-3. API Controllers
+1. Authentication via API tokens
+2. Controllers to insert user context from api tokens
+3. Implement testing suite
+4. Test current code base, look for coverage > 85%
+5. Date modeling for market news
+6. External integration to fetch market news from ForexFactory 
 
 ---
 

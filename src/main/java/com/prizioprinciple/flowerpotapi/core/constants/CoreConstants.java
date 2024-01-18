@@ -7,7 +7,7 @@ import java.time.Year;
  * Constants used for the core package
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 public class CoreConstants {
 
@@ -101,6 +101,8 @@ public class CoreConstants {
                 throw new UnsupportedOperationException(String.format(NO_INSTANTIATION, getClass().getName()));
             }
 
+            public static final String API_TOKEN_CANNOT_BE_NULL = "apiToken cannot be null";
+
             public static class User {
 
                 private User() {
@@ -112,6 +114,8 @@ public class CoreConstants {
                 public static final String USERNAME_CANNOT_BE_NULL = "username cannot be null";
 
                 public static final String EMAIL_CANNOT_BE_NULL = "email cannot be null";
+
+                public static final String USER_DATE_REGISTERED_CANNOT_BE_NULL = "user's registration date cannot be null";
             }
         }
 

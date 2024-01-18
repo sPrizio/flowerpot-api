@@ -15,6 +15,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.validateParameterIsNotNull;
@@ -23,10 +24,13 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * Service-layer for {@link User} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.2
  */
 @Service
 public class UserService {
+
+    @Resource(name = "apiTokenService")
+    private ApiTokenService apiTokenService;
 
     @Resource(name = "phoneNumberService")
     private PhoneNumberService phoneNumberService;
@@ -72,7 +76,7 @@ public class UserService {
         }
 
         try {
-            return applyChanges(new User(), data);
+            return applyChanges(new User(), data, true);
         } catch (Exception e) {
             throw new EntityCreationException(String.format("A User could not be created : %s", e.getMessage()), e);
         }
@@ -98,7 +102,7 @@ public class UserService {
                     findUserByEmail(email)
                             .orElseThrow(() -> new NoResultFoundException(String.format("No User found for email %s", email)));
 
-            return applyChanges(user, data);
+            return applyChanges(user, data, false);
         } catch (Exception e) {
             throw new EntityModificationException(String.format("An error occurred while modifying the User : %s", e.getMessage()), e);
         }
@@ -114,7 +118,7 @@ public class UserService {
      * @param data {@link Map}
      * @return updated {@link User}
      */
-    private User applyChanges(User user, final Map<String, Object> data) {
+    private User applyChanges(User user, final Map<String, Object> data, final boolean isNew) {
 
         Map<String, Object> ud = (Map<String, Object>) data.get("user");
         Set<PhoneNumber> phoneNumbers = (CollectionUtils.isEmpty(user.getPhones())) ? new HashSet<>() : new HashSet<>(user.getPhones());
@@ -127,6 +131,11 @@ public class UserService {
         user.setRoles(List.of(UserRole.TRADER));
 
         user = this.userRepository.save(user);
+
+        if (isNew) {
+            user.setDateRegistered(LocalDateTime.now());
+            user.setApiToken(this.apiTokenService.generateApiToken(user));
+        }
 
         List<Map<String, Object>> phoneData = (List<Map<String, Object>>) ud.get("phoneNumbers");
         for (Map<String, Object> d : phoneData) {
