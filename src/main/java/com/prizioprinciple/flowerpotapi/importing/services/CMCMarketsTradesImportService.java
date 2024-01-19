@@ -32,7 +32,7 @@ import java.util.Objects;
  * Service-layer for importing trades into the system from CMC Markets
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 @Component("cmcMarketsTradesImportService")
 public class CMCMarketsTradesImportService implements ImportService {
@@ -150,7 +150,7 @@ public class CMCMarketsTradesImportService implements ImportService {
             return new CMCTradeWrapper(dateTime, type, orderNumber, relatedOrderNumber, product, units, price, amount);
         } catch (Exception e) {
             LOGGER.error("Error parsing line : {} for reason : {}", string, e.getMessage(), e);
-            return null;
+            throw new DateTimeException(e.getMessage(), e);
         }
     }
 
@@ -164,17 +164,7 @@ public class CMCMarketsTradesImportService implements ImportService {
         try {
             return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm"));
         } catch (Exception e) {
-            try {
-                String[] input = string.split(" ");
-                input[1] = input[1] + ".";
-                return LocalDateTime.parse(String.join(" ", input), DateTimeFormatter.ofPattern("dd MMM yyyy H:mm:ss"));
-            } catch (Exception ex) {
-                try {
-                    return LocalDateTime.parse(string, DateTimeFormatter.ofPattern("dd MMMM yyyy H:mm:ss"));
-                } catch (Exception exe) {
-                    throw new DateTimeException(e.getMessage(), e);
-                }
-            }
+            throw new DateTimeException(e.getMessage(), e);
         }
     }
 
