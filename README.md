@@ -19,8 +19,6 @@ Current Release: **Pre-release**
 ---
 
 ### Todo List
-- Implement testing suite
-- Test current code base, look for coverage > 85%
 - Date modeling for market news
 - External integration to fetch market news from ForexFactory 
 
@@ -29,6 +27,6 @@ Current Release: **Pre-release**
 ### Version History
 - **0.0.1** : Basic data modeling & Trade Import feature. Allows users with multiple trading accounts to import trades into their accounts from supported brokers.
 - **0.0.2** : API Controller Authentication
-- -> **0.0.3** : Testing Suite implementation & integration
-- **0.0.4** : Forex Factory calendar integration
+- **0.0.3** : Testing Suite implementation & integration
+- --> **0.0.4** : Forex Factory calendar integration
 

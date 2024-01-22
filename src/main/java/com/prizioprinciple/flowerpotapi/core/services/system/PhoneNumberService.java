@@ -23,7 +23,7 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * Service-layer for {@link PhoneNumber} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 @Service
 public class PhoneNumberService {
@@ -132,7 +132,7 @@ public class PhoneNumberService {
 
         phoneNumber.setPhoneType(PhoneType.valueOf(ud.get("phoneType").toString()));
         phoneNumber.setCountryCode(Short.parseShort(ud.get("countryCode").toString()));
-        phoneNumber.setTelephoneNumber(Long.parseLong(ud.get("phoneNumber").toString()));
+        phoneNumber.setTelephoneNumber(Long.parseLong(ud.get("telephoneNumber").toString()));
         phoneNumber.setUser(user);
 
         return this.phoneNumberRepository.save(phoneNumber);

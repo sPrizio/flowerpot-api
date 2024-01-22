@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * Service-layer for importing trades into the system from the MetaTrader4 platform
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 @Component("metaTrader4TradesImportService")
 public class MetaTrader4TradesImportService implements ImportService {
@@ -105,8 +105,8 @@ public class MetaTrader4TradesImportService implements ImportService {
             final List<MetaTrade4TradeWrapper> buyTrades = trades.stream().filter(trade -> !existingTrades.containsKey(trade.ticketNumber())).filter(trade -> matchTradeType(trade.type(), TradeType.BUY)).toList();
             final List<MetaTrade4TradeWrapper> sellTrades = trades.stream().filter(trade -> !existingTrades.containsKey(trade.ticketNumber())).filter(trade -> matchTradeType(trade.type(), TradeType.SELL)).toList();
 
-            buyTrades.forEach(trade -> tradeMap.put(trade.ticketNumber(), createNewTrade(trade, TradeType.BUY)));
-            sellTrades.forEach(trade -> tradeMap.put(trade.ticketNumber(), createNewTrade(trade, TradeType.SELL)));
+            buyTrades.forEach(trade -> tradeMap.put(trade.ticketNumber(), createNewTrade(trade, TradeType.BUY, account)));
+            sellTrades.forEach(trade -> tradeMap.put(trade.ticketNumber(), createNewTrade(trade, TradeType.SELL, account)));
 
             this.tradeRepository.saveAll(tradeMap.values());
             this.accountRepository.save(account);
@@ -214,7 +214,7 @@ public class MetaTrader4TradesImportService implements ImportService {
      * @param tradeType {@link TradeType}
      * @return {@link Trade}
      */
-    private Trade createNewTrade(final MetaTrade4TradeWrapper wrapper, final TradeType tradeType) {
+    private Trade createNewTrade(final MetaTrade4TradeWrapper wrapper, final TradeType tradeType, final Account account) {
 
         Trade trade = new Trade();
 
@@ -230,6 +230,7 @@ public class MetaTrader4TradesImportService implements ImportService {
         trade.setOpenPrice(wrapper.openPrice());
         trade.setStopLoss(wrapper.stopLoss());
         trade.setTakeProfit(wrapper.takeProfit());
+        trade.setAccount(account);
 
         return trade;
     }

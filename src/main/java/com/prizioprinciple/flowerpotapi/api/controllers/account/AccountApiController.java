@@ -9,9 +9,12 @@ import com.prizioprinciple.flowerpotapi.core.enums.account.Broker;
 import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.platform.TradePlatform;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
+import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.services.account.AccountService;
 import com.prizioprinciple.flowerpotapi.security.aspects.ValidateApiToken;
+import com.prizioprinciple.flowerpotapi.security.constants.SecurityConstants;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +29,7 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * API Controller for {@link Account}
  *
  * @author Stephen Prizio
- * @version 0.0.2
+ * @version 0.0.3
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/account")
@@ -95,12 +98,14 @@ public class AccountApiController extends AbstractApiController {
     /**
      * Returns a {@link Account}
      *
+     * @param request     {@link HttpServletRequest}
      * @param requestBody json request
      * @return {@link StandardJsonResponse}
      */
     @PostMapping("/create-account")
-    public StandardJsonResponse postCreateNewAccount(final @RequestBody Map<String, Object> requestBody) {
+    public StandardJsonResponse postCreateNewAccount(final HttpServletRequest request, final @RequestBody Map<String, Object> requestBody) {
         validateJsonIntegrity(requestBody, List.of("account"), "json did not contain of the required keys : %s", List.of("account"));
-        return new StandardJsonResponse(true, this.accountDTOConverter.convert(this.accountService.createNewAccount(requestBody)), StringUtils.EMPTY);
+        final User user = (User) request.getAttribute(SecurityConstants.USER_REQUEST_KEY);
+        return new StandardJsonResponse(true, this.accountDTOConverter.convert(this.accountService.createNewAccount(requestBody, user)), StringUtils.EMPTY);
     }
 }

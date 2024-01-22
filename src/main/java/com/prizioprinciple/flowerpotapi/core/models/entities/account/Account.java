@@ -18,12 +18,12 @@ import java.util.List;
  * Class representation of a trading account, an entity that can hold {@link Trade}s and other information
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 @Getter
 @Setter
 @Entity
-@Table(name = "accounts")
+@Table(name = "accounts", uniqueConstraints = @UniqueConstraint(name = "UniqueAccountNumber", columnNames = {"account_number"}))
 public class Account implements GenericEntity {
 
     @Id
@@ -48,7 +48,7 @@ public class Account implements GenericEntity {
     @Column
     private String name;
 
-    @Column
+    @Column(name = "account_number", unique = true)
     private long accountNumber;
 
     @Column
@@ -71,4 +71,22 @@ public class Account implements GenericEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private User user;
+
+
+    //  METHODS
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Account account = (Account) o;
+
+        return accountNumber == account.accountNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (accountNumber ^ (accountNumber >>> 32));
+    }
 }
