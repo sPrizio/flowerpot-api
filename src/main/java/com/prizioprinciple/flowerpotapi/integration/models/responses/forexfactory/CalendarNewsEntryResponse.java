@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
  * @author Stephen Prizio
  * @version 0.0.4
  */
-@Getter
 public record CalendarNewsEntryResponse(
         String title,
         String country,
