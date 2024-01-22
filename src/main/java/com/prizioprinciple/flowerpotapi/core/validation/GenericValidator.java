@@ -19,7 +19,7 @@ import java.util.*;
  * Validator class for method integrity
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 public class GenericValidator {
 
@@ -164,6 +164,10 @@ public class GenericValidator {
 
         validateSupportedNumericalType(number);
 
+        if (number instanceof Short num && num < 0) {
+            throw new UnexpectedNegativeValueException(String.format(message, values));
+        }
+
         if (number instanceof Integer num && num < 0) {
             throw new UnexpectedNegativeValueException(String.format(message, values));
         }
@@ -192,6 +196,10 @@ public class GenericValidator {
     public static void validateNonZeroValue(final Number number, final String message, final Object... values) {
 
         validateSupportedNumericalType(number);
+
+        if (number instanceof Short num && num == 0) {
+            throw new UnexpectedZeroValueException(String.format(message, values));
+        }
 
         if (number instanceof Integer num && num == 0) {
             throw new UnexpectedZeroValueException(String.format(message, values));
@@ -238,7 +246,7 @@ public class GenericValidator {
      * @throws UnsupportedOperationException if value is not one of these 4: {@link Integer}, {@link Long}, {@link Float}, {@link Double}
      */
     private static void validateSupportedNumericalType(final Number number) {
-        if (!(number instanceof Integer || number instanceof Long || number instanceof Float || number instanceof Double)) {
+        if (!(number instanceof Short || number instanceof Integer || number instanceof Long || number instanceof Float || number instanceof Double)) {
             throw new UnsupportedOperationException(String.format("number %s was not of the supported type [Integer, Long, Float, Double]", number.getClass()));
         }
     }

@@ -1,16 +1,15 @@
 package com.prizioprinciple.flowerpotapi.core.services.account;
 
+import com.prizioprinciple.flowerpotapi.core.constants.CoreConstants;
 import com.prizioprinciple.flowerpotapi.core.enums.account.AccountType;
 import com.prizioprinciple.flowerpotapi.core.enums.account.Broker;
 import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.platform.TradePlatform;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityCreationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.validation.MissingRequiredDataException;
-import com.prizioprinciple.flowerpotapi.core.exceptions.validation.NoResultFoundException;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.repositories.account.AccountRepository;
-import com.prizioprinciple.flowerpotapi.core.services.security.UserService;
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Service;
@@ -19,20 +18,19 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.validateParameterIsNotNull;
+
 /**
  * Service-layer for {@link Account} entities
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.3
  */
 @Service
 public class AccountService {
 
     @Resource(name = "accountRepository")
     private AccountRepository accountRepository;
-
-    @Resource(name = "userService")
-    private UserService userService;
 
 
     //  METHODS
@@ -51,16 +49,19 @@ public class AccountService {
      * Creates a new {@link Account} with the given data
      *
      * @param data {@link Map}
+     * @param user {@link User}
      * @return new {@link Account}
      */
-    public Account createNewAccount(final Map<String, Object> data) {
+    public Account createNewAccount(final Map<String, Object> data, final User user) {
+
+        validateParameterIsNotNull(user, CoreConstants.Validation.Security.User.USER_CANNOT_BE_NULL);
 
         if (MapUtils.isEmpty(data)) {
             throw new MissingRequiredDataException("The required data for creating an Account entity was null or empty");
         }
 
         try {
-            return applyChanges(new Account(), data);
+            return applyChanges(new Account(), data, user);
         } catch (Exception e) {
             throw new EntityCreationException(String.format("An Account could not be created : %s", e.getMessage()), e);
         }
@@ -74,12 +75,12 @@ public class AccountService {
      *
      * @param account {@link Account}
      * @param data    {@link Map}
+     * @param user    {@link User}
      * @return updated {@link Account}
      */
-    private Account applyChanges(Account account, final Map<String, Object> data) {
+    private Account applyChanges(Account account, final Map<String, Object> data, final User user) {
 
         final Map<String, Object> acc = (Map<String, Object>) data.get("account");
-        final User user = this.userService.findUserByEmail(acc.get("userEmail").toString()).orElseThrow(() -> new NoResultFoundException(String.format("No user was found for email:  %s", acc.get("userEmail").toString())));
         final boolean isDefault = user.getAccounts().isEmpty();
 
         account.setAccountOpenTime(LocalDateTime.now());

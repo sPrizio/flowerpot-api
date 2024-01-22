@@ -35,7 +35,7 @@ import static com.prizioprinciple.flowerpotapi.importing.validation.ImportValida
  * Api controller for {@link Trade}
  *
  * @author Stephen Prizio
- * @version 0.0.2
+ * @version 0.0.3
  */
 @RestController
 @RequestMapping("${base.api.controller.endpoint}/trade")
@@ -161,9 +161,9 @@ public class TradeApiController {
     @PostMapping("/import-trades")
     public StandardJsonResponse postImportTrades(final HttpServletRequest request, final @RequestParam("accountNumber") long accountNumber, final @RequestParam("file") MultipartFile file) throws IOException {
 
-        validateImportFileExtension(file, new Account().getTradePlatform().getFormats(), "The given file %s was not of a valid format", file.getOriginalFilename());
-
         final User user = (User) request.getAttribute(SecurityConstants.USER_REQUEST_KEY);
+        validateImportFileExtension(file, getAccountForId(user, accountNumber).getTradePlatform().getFormats(), "The given file %s was not of a valid format", file.getOriginalFilename());
+
         String result = this.genericImportService.importTrades(file.getInputStream(), getAccountForId(user, accountNumber));
         if (StringUtils.isEmpty(result)) {
             return new StandardJsonResponse(true, true, StringUtils.EMPTY);

@@ -12,6 +12,8 @@ import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.models.entities.system.PhoneNumber;
 import com.prizioprinciple.flowerpotapi.core.models.entities.trade.Trade;
+import com.prizioprinciple.flowerpotapi.security.constants.SecurityConstants;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +25,19 @@ import java.util.List;
  * @version 0.0.3
  */
 public abstract class AbstractGenericTest {
+
+    /**
+     * Generates a {@link User} context for use within the testing suite
+     *
+     * @return {@link RequestPostProcessor}
+     */
+    public RequestPostProcessor testUserContext() {
+        return request -> {
+            // EasyMock initializations...
+            request.setAttribute(SecurityConstants.USER_REQUEST_KEY, generateTestUser());
+            return request;
+        };
+    }
 
     /**
      * Generates a test BUY {@link Trade}
