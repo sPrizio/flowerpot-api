@@ -19,8 +19,8 @@ Current Release: **Pre-release**
 ---
 
 ### Todo List
-- Date modeling for market news
 - External integration to fetch market news from ForexFactory 
+- Email service to send daily emails (Sunday - thursday) for upcoming events
 
 ---
 

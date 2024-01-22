@@ -13,7 +13,7 @@ import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import java.io.BufferedReader;
@@ -30,9 +30,9 @@ import java.util.regex.Pattern;
  * Service-layer for importing trades into the system from the MetaTrader4 platform
  *
  * @author Stephen Prizio
- * @version 0.0.3
+ * @version 0.0.4
  */
-@Component("metaTrader4TradesImportService")
+@Service("metaTrader4TradesImportService")
 public class MetaTrader4TradesImportService implements ImportService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetaTrader4TradesImportService.class);
