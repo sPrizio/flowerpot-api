@@ -1,7 +1,6 @@
 package com.prizioprinciple.flowerpotapi.integration.models.responses.forexfactory;
 
 import com.prizioprinciple.flowerpotapi.integration.models.responses.GenericIntegrationResponse;
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 /**
