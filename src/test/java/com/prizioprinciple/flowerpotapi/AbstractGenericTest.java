@@ -4,25 +4,34 @@ import com.prizioprinciple.flowerpotapi.api.models.dto.account.AccountDTO;
 import com.prizioprinciple.flowerpotapi.core.enums.account.AccountType;
 import com.prizioprinciple.flowerpotapi.core.enums.account.Broker;
 import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
+import com.prizioprinciple.flowerpotapi.core.enums.news.MarketNewsSeverity;
 import com.prizioprinciple.flowerpotapi.core.enums.security.UserRole;
+import com.prizioprinciple.flowerpotapi.core.enums.system.Country;
 import com.prizioprinciple.flowerpotapi.core.enums.system.PhoneType;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.info.TradeType;
 import com.prizioprinciple.flowerpotapi.core.enums.trade.platform.TradePlatform;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
+import com.prizioprinciple.flowerpotapi.core.models.entities.news.MarketNews;
+import com.prizioprinciple.flowerpotapi.core.models.entities.news.MarketNewsEntry;
+import com.prizioprinciple.flowerpotapi.core.models.entities.news.MarketNewsSlot;
 import com.prizioprinciple.flowerpotapi.core.models.entities.security.User;
 import com.prizioprinciple.flowerpotapi.core.models.entities.system.PhoneNumber;
 import com.prizioprinciple.flowerpotapi.core.models.entities.trade.Trade;
+import com.prizioprinciple.flowerpotapi.integration.models.responses.forexfactory.CalendarNewsEntryResponse;
 import com.prizioprinciple.flowerpotapi.security.constants.SecurityConstants;
 import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Parent-level testing class to provide testing assistance
  *
  * @author Stephen Prizio
- * @version 0.0.3
+ * @version 0.0.4
  */
 public abstract class AbstractGenericTest {
 
@@ -159,5 +168,60 @@ public abstract class AbstractGenericTest {
         phoneNumber.setCountryCode((short) 1);
 
         return phoneNumber;
+    }
+
+    /**
+     * Generates a test {@link MarketNewsEntry}
+     *
+     * @return {@link MarketNewsEntry}
+     */
+    public MarketNewsEntry generateTestMarketNewsEntry() {
+
+        final MarketNewsEntry marketNewsEntry = new MarketNewsEntry();
+
+        marketNewsEntry.setContent("Test News Entry");
+        marketNewsEntry.setSeverity(MarketNewsSeverity.DANGEROUS);
+        marketNewsEntry.setCountry(Country.CANADA);
+
+        return marketNewsEntry;
+    }
+
+    /**
+     * Generates a test {@link MarketNewsSlot}
+     *
+     * @return {@link MarketNewsSlot}
+     */
+    public MarketNewsSlot generateTestMarketNewsSlot() {
+
+        final MarketNewsSlot marketNewsSlot = new MarketNewsSlot();
+
+        marketNewsSlot.setTime(LocalTime.of(13, 10));
+        marketNewsSlot.setEntries(new ArrayList<>(List.of(generateTestMarketNewsEntry())));
+
+        return marketNewsSlot;
+    }
+
+    /**
+     * Generates a test {@link MarketNews}
+     *
+     * @return {@link MarketNews}
+     */
+    public MarketNews generateMarketNews() {
+
+        final MarketNews marketNews = new MarketNews();
+
+        marketNews.setDate(LocalDate.of(2023, 1, 19));
+        marketNews.setSlots(new ArrayList<>(List.of(generateTestMarketNewsSlot())));
+
+        return marketNews;
+    }
+
+    /**
+     * Generates a test {@link CalendarNewsEntryResponse}
+     *
+     * @return {@link CalendarNewsEntryResponse}
+     */
+    public CalendarNewsEntryResponse generateCalendarNewsEntryResponse() {
+        return new CalendarNewsEntryResponse("Currenct Account", "CAD", "2023-05-30T08:30:00-04:00", "Low", "-9.9B", "-10.6B");
     }
 }

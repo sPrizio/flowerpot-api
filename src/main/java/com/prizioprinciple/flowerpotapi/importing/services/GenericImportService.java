@@ -4,7 +4,7 @@ import com.prizioprinciple.flowerpotapi.core.enums.trade.platform.TradePlatform;
 import com.prizioprinciple.flowerpotapi.core.models.entities.account.Account;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
@@ -16,9 +16,9 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * Generic importing service to handle incoming files, will delegate to specific import services
  *
  * @author Stephen Prizio
- * @version 0.0.1
+ * @version 0.0.4
  */
-@Component("genericImportService")
+@Service
 public class GenericImportService {
 
     private final CMCMarketsTradesImportService cmcMarketsTradesImportService;
