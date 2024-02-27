@@ -8,9 +8,18 @@ import static com.prizioprinciple.flowerpotapi.core.validation.GenericValidator.
  * Parent-level controller providing common functionality
  *
  * @author Stephen Prizio
- * @version 0.0.2
+ * @version 0.0.4
  */
 public abstract class AbstractApiController {
+
+    /**
+     * Basic data integrity validation
+     *
+     * @param date date of format yyyy-MM-dd
+     */
+    public void validate(final String date) {
+        validateLocalDateFormat(date, CoreConstants.DATE_FORMAT, CoreConstants.Validation.DateTime.START_DATE_INVALID_FORMAT, date, CoreConstants.DATE_FORMAT);
+    }
 
     /**
      * Basic data integrity validation
