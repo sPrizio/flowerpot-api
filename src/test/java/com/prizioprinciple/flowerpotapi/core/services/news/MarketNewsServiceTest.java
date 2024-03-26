@@ -82,8 +82,24 @@ public class MarketNewsServiceTest extends AbstractGenericTest {
     }
 
     @Test
+    public void test_findNewsWithinIntervalWithLocales_basLocales() {
+        assertThatExceptionOfType(UnsupportedOperationException.class)
+                .isThrownBy(() -> this.marketNewsService.findNewsWithinInterval(LocalDate.MIN, LocalDate.MAX, ""))
+                .withMessage(CoreConstants.Validation.DataIntegrity.BAD_LOCALE_ENUM);
+    }
+
+    @Test
     public void test_findNewsWithinInterval_success() {
-        assertThat(this.marketNewsService.findNewsWithinInterval(LocalDate.MIN, LocalDate.MAX, ""))
+        assertThat(this.marketNewsService.findNewsWithinInterval(LocalDate.MIN, LocalDate.MAX))
+                .isNotNull()
+                .first()
+                .extracting("date")
+                .isEqualTo(LocalDate.of(2023, 1, 19));
+    }
+
+    @Test
+    public void test_findNewsWithinIntervalWithLocales_success() {
+        assertThat(this.marketNewsService.findNewsWithinInterval(LocalDate.MIN, LocalDate.MAX, "CAN", "USD"))
                 .isNotNull()
                 .first()
                 .extracting("date")

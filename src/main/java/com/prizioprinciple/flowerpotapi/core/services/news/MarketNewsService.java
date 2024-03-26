@@ -1,7 +1,9 @@
 package com.prizioprinciple.flowerpotapi.core.services.news;
 
 import com.prizioprinciple.flowerpotapi.core.constants.CoreConstants;
+import com.prizioprinciple.flowerpotapi.core.enums.account.Currency;
 import com.prizioprinciple.flowerpotapi.core.enums.news.MarketNewsSeverity;
+import com.prizioprinciple.flowerpotapi.core.enums.system.Country;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityCreationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.system.EntityModificationException;
 import com.prizioprinciple.flowerpotapi.core.exceptions.validation.MissingRequiredDataException;
@@ -19,7 +21,7 @@ import com.prizioprinciple.flowerpotapi.integration.services.forexfactory.ForexF
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -64,20 +66,28 @@ public class MarketNewsService {
      * @param locales locales / currencies
      * @return {@link List} of {@link MarketNews}
      */
-    public List<MarketNews> findNewsWithinInterval(final LocalDate start, final LocalDate end, final String locales) {
+    public List<MarketNews> findNewsWithinInterval(final LocalDate start, final LocalDate end, final String... locales) {
 
         validateParameterIsNotNull(start, CoreConstants.Validation.DateTime.START_DATE_CANNOT_BE_NULL);
         validateParameterIsNotNull(end, CoreConstants.Validation.DateTime.END_DATE_CANNOT_BE_NULL);
 
         final List<MarketNews> marketNews = this.marketNewsRepository.findNewsWithinInterval(start, end);
-        if (StringUtils.isEmpty(locales)) {
+        if (locales == null || locales.length == 0) {
             return marketNews;
+        }
+
+        if (!validateLocales(locales)) {
+            throw new UnsupportedOperationException(CoreConstants.Validation.DataIntegrity.BAD_LOCALE_ENUM);
         }
 
         marketNews.forEach(n -> {
             final List<MarketNewsSlot> slots = new ArrayList<>(n.getSlots());
             slots.forEach(s -> {
-                final List<MarketNewsEntry> entries = s.getEntries().stream().filter(e -> locales.contains(e.getCountry().getCurrency().getIsoCode())).toList();
+                final List<MarketNewsEntry> entries =
+                        s.getEntries()
+                                .stream()
+                                .filter(e -> isValidLocale(e, locales))
+                                .toList();
                 s.setEntries(entries);
             });
 
@@ -350,5 +360,39 @@ public class MarketNewsService {
         }
 
         return slot.getEntries().stream().filter(entry -> entry.getContent().equals(title)).findFirst().orElse(new MarketNewsEntry());
+    }
+
+    /**
+     * Checks if the given strings are valid {@link Currency}s or {@link Country}s
+     *
+     * @param testLocales test enums
+     * @return true if a country or currency
+     */
+    private boolean validateLocales(final String[] testLocales) {
+
+        if (Arrays.stream(testLocales).anyMatch(s -> s.equalsIgnoreCase(Country.ALL_COUNTRIES.getIsoCode()))) {
+            return true;
+        }
+
+        return Arrays.stream(testLocales).allMatch(l -> Currency.get(l) != Currency.NOT_APPLICABLE || Country.getByIsoCode(l) != Country.NOT_APPLICABLE);
+    }
+
+    /**
+     * Validates that the given {@link MarketNewsEntry} pertains to one of the given test locales
+     *
+     * @param entry {@link MarketNewsEntry}
+     * @param testLocales test locales
+     * @return true if valid
+     */
+    private boolean isValidLocale(final MarketNewsEntry entry, final String[] testLocales) {
+
+        for (final String test : testLocales) {
+            Country testCountry = Country.getByIsoCode(test);
+            Currency testCurrency = Currency.get(test);
+
+            return (entry.getCountry().equals(testCountry)) || (entry.getCountry().getCurrency().equals(testCurrency));
+        }
+
+        return false;
     }
 }

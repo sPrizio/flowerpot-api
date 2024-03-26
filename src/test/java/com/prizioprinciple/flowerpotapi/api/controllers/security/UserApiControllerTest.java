@@ -70,7 +70,7 @@ public class UserApiControllerTest extends AbstractGenericTest {
     public void test_getCountryCodes_success() throws Exception {
         this.mockMvc.perform(get("/api/v1/user/country-codes"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0]", is("1")));
+                .andExpect(jsonPath("$.data[1]", is("1")));
     }
 
 
@@ -100,7 +100,7 @@ public class UserApiControllerTest extends AbstractGenericTest {
     public void test_getCountries_success() throws Exception {
         this.mockMvc.perform(get("/api/v1/user/countries"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data[0]", is("ARGENTINA")));
+                .andExpect(jsonPath("$.data[1]", is("ARGENTINA")));
     }
 
 

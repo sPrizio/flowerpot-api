@@ -166,6 +166,8 @@ public class CoreConstants {
             public static final String UID_CANNOT_BE_NULL = "uid cannot be null";
 
             public static final String INVALID_INTERVAL = "%s was not a valid interval";
+
+            public static final String BAD_LOCALE_ENUM = "One of the given locales was not a valid Currency or Country";
         }
 
         public static class DateTime {

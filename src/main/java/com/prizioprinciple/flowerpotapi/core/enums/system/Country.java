@@ -15,6 +15,7 @@ import java.util.Arrays;
 @Getter
 public enum Country {
 
+    ALL_COUNTRIES("ALL_COUNTRIES", "All Countries", Currency.NOT_APPLICABLE, "-1"),
     ARGENTINA("ARG", "Argentina", Currency.ARGENTINE_PESO, "54"),
     AUSTRALIA("AUS", "Australia", Currency.AUSTRALIAN_DOLLAR, "61"),
     AUSTRIA("AUT", "Austria", Currency.EUROPEAN_EURO, "43"),
@@ -38,7 +39,8 @@ public enum Country {
     RUSSIA("RUS", "Russia", Currency.RUSSIAN_RUBLE, "7"),
     SPAIN("ESP", "Spain", Currency.EUROPEAN_EURO, "34"),
     SWEDEN("SWE", "Sweden", Currency.SWEDISH_KRONA, "46"),
-    UNITED_STATES("USA", "United States", Currency.US_DOLLAR, "1");
+    UNITED_STATES("USA", "United States", Currency.US_DOLLAR, "1"),
+    NOT_APPLICABLE("N/A", "Not Applicable", Currency.NOT_APPLICABLE, "-1");
 
     private final String isoCode;
 
@@ -79,6 +81,7 @@ public enum Country {
      */
     public static Country getByIsoCode(final String code) {
         return switch (code.toUpperCase()) {
+            case "ALL_COUNTRIES" -> ALL_COUNTRIES;
             case "ARG" -> ARGENTINA;
             case "AUS" -> AUSTRALIA;
             case "AUT" -> AUSTRIA;
@@ -102,7 +105,8 @@ public enum Country {
             case "RUS" -> RUSSIA;
             case "ESP" -> SPAIN;
             case "SWE" -> SWEDEN;
-            default -> UNITED_STATES;
+            case "USA" -> UNITED_STATES;
+            default -> NOT_APPLICABLE;
         };
     }
 }

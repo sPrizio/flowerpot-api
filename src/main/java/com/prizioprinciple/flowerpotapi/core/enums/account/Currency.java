@@ -27,7 +27,8 @@ public enum Currency {
     DANISH_KRONE("DKK", "Danish Krone", "kr."),
     NORWEGIAN_KRONE("NOK", "Norwegian Krone", "kr"),
     RUSSIAN_RUBLE("RUB", "Russian Ruble", "₽"),
-    SWEDISH_KRONA("SEK", "Swedish Krona", "kr");
+    SWEDISH_KRONA("SEK", "Swedish Krona", "kr"),
+    NOT_APPLICABLE("N/A", "Not Applicable", "na");
 
 
     private final String isoCode;
@@ -67,7 +68,8 @@ public enum Currency {
             case "NOK" -> NORWEGIAN_KRONE;
             case "RUB" -> RUSSIAN_RUBLE;
             case "SEK" -> SWEDISH_KRONA;
-            default -> US_DOLLAR;
+            case "USD" -> US_DOLLAR;
+            default -> NOT_APPLICABLE;
         };
     }
 }
