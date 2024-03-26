@@ -64,12 +64,7 @@ public class MarketNewsApiController extends AbstractApiController {
      */
     @ValidateApiToken
     @GetMapping("/get-for-interval")
-    public StandardJsonResponse getNewsForInterval(
-            final @RequestParam("start") String start,
-            final @RequestParam("end") String end,
-            final @RequestParam(value = "locales[]", defaultValue = "all_countries") String[] locales,
-            final HttpServletRequest request
-    ) {
+    public StandardJsonResponse getNewsForInterval(final @RequestParam("start") String start, final @RequestParam("end") String end, final @RequestParam String[] locales, final HttpServletRequest request) {
         validate(start, end);
         final List<MarketNews> news = this.marketNewsService.findNewsWithinInterval(LocalDate.parse(start), LocalDate.parse(end), locales);
         if (CollectionUtils.isNotEmpty(news)) {

@@ -21,7 +21,6 @@ import com.prizioprinciple.flowerpotapi.integration.services.forexfactory.ForexF
 import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -386,11 +385,17 @@ public class MarketNewsService {
      */
     private boolean isValidLocale(final MarketNewsEntry entry, final String[] testLocales) {
 
+        if (Arrays.stream(testLocales).anyMatch(s -> s.equalsIgnoreCase(Country.ALL_COUNTRIES.getIsoCode()))) {
+            return true;
+        }
+
         for (final String test : testLocales) {
             Country testCountry = Country.getByIsoCode(test);
             Currency testCurrency = Currency.get(test);
 
-            return (entry.getCountry().equals(testCountry)) || (entry.getCountry().getCurrency().equals(testCurrency));
+            if (entry.getCountry().equals(testCountry) || entry.getCountry().getCurrency().equals(testCurrency)) {
+                return true;
+            }
         }
 
         return false;
